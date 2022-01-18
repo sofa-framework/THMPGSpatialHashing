@@ -79,8 +79,6 @@ jobs:
             echo "DYLD_LIBRARY_PATH=$WORKSPACE_ARTIFACT_PATH/lib:$SOFA_ROOT/lib:$DYLD_LIBRARY_PATH" | tee -a $GITHUB_ENV
           fi
           echo "LD_LIBRARY_PATH=$WORKSPACE_ARTIFACT_PATH/lib:$SOFA_ROOT/lib:$LD_LIBRARY_PATH" | tee -a $GITHUB_ENV
-          # Add execution right on the tests
-          chmod +x $WORKSPACE_BUILD_PATH/THMPGSpatialHashingPlugin_test/THMPGSpatialHashingPlugin_test${{ steps.sofa.outputs.exe }}
 
   deploy:
     name: Deploy artifacts

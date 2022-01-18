@@ -14,7 +14,7 @@ set(SOURCE_FILES
     initTHMPGSpatialHashingPlugin.cpp
 )
 
-sofa_find_package(SofaBaseCollision REQUIRED)
+find_package(SofaBaseCollision REQUIRED)
 sofa_find_package(SofaMeshCollision REQUIRED)
 sofa_find_package(SofaMiscCollision REQUIRED)
 
