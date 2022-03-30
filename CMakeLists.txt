@@ -17,9 +17,10 @@ set(SOURCE_FILES
 find_package(SofaBaseCollision REQUIRED)
 sofa_find_package(SofaMeshCollision REQUIRED)
 sofa_find_package(SofaMiscCollision REQUIRED)
+sofa_find_package(CollisionOBBCapsule REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} SofaBaseCollision SofaMeshCollision SofaMiscCollision)
+target_link_libraries(${PROJECT_NAME} SofaBaseCollision SofaMeshCollision SofaMiscCollision CollisionOBBCapsule)
 
 find_package(SofaTest QUIET)
 if(SofaTest_FOUND)
