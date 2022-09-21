@@ -1,19 +1,19 @@
-#include "THMPGSpatialHashing.h"
+#include <THMPGSpatialHashing/THMPGSpatialHashing.h>
+
 #include <sofa/component/collision/geometry/SphereModel.h>
 #include <sofa/component/collision/geometry/TriangleModel.h>
 #include <sofa/component/collision/geometry/LineModel.h>
+
+#if THMPGSPATIALHASHING_HAVE_COLLISIONOBBCAPSULE
+#include <CollisionOBBCapsule/geometry/OBBModel.h>
+#endif
+
 
 #include <sofa/core/ObjectFactory.h>
 
 using namespace sofa::component::collision::geometry;
 
-namespace sofa
-{
-
-namespace component
-{
-
-namespace collision
+namespace sofa::component::collision
 {
 
 struct CannotInitializeCellSize : std::exception {
@@ -91,17 +91,21 @@ void THMPGSpatialHashing::sumEdgeLength(core::CollisionModel *cm){
         }
         _nb_edges += sphm->getSize();
     }
-    //else if(cm->getEnumType() == sofa::core::CollisionModel::OBB_TYPE)
-    //{
-    //    const OBBCollisionModel<sofa::defaulttype::Rigid3Types> * obbm = static_cast<OBBCollisionModel<sofa::defaulttype::Rigid3Types> *>(cm);
-    //    for(int i = 0 ; i < obbm->getSize() ; ++i){
-    //        const OBBCollisionModel<sofa::defaulttype::Rigid3Types>::Coord & extents = obbm->extents(i);
-    //        for(int j = 0 ; j < 3 ; ++j){
-    //            _total_edges_length += (SReal)(2)*extents[j];
-    //        }
-    //    }
-    //    _nb_edges += (SReal)(3) * obbm->getSize();
-    //}
+#if THMPGSPATIALHASHING_HAVE_COLLISIONOBBCAPSULE
+    else if(cm->getEnumType() == sofa::core::CollisionModel::OBB_TYPE)
+    {
+        using namespace collisionobbcapsule::geometry;
+
+        const OBBCollisionModel<sofa::defaulttype::Rigid3Types> * obbm = static_cast<OBBCollisionModel<sofa::defaulttype::Rigid3Types> *>(cm);
+        for(int i = 0 ; i < obbm->getSize() ; ++i){
+            const OBBCollisionModel<sofa::defaulttype::Rigid3Types>::Coord & extents = obbm->extents(i);
+            for(int j = 0 ; j < 3 ; ++j){
+                _total_edges_length += (SReal)(2)*extents[j];
+            }
+        }
+        _nb_edges += (SReal)(3) * obbm->getSize();
+    }
+#endif
 }
 
 
@@ -246,6 +250,4 @@ void THMPGSpatialHashing::addCollisionPair (const std::pair<core::CollisionModel
     //sofa::helper::AdvancedTimer::stepEnd("THMPGSpatialHashing::addCollisionPair");
 }
 
-}
-}
-}
+} // namespace sofa::component::collision

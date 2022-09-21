@@ -19,9 +19,9 @@
 *                                                                             *
 * Contact information: contact@sofa-framework.org                             *
 ******************************************************************************/
-#ifndef SOFA_COMPONENT_COLLISION_THMPGSPATIALHASHING_H
-#define SOFA_COMPONENT_COLLISION_THMPGSPATIALHASHING_H
-#include "config.h"
+#pragma once
+
+#include <THMPGSpatialHashing/config.h>
 
 #include <sofa/core/collision/BroadPhaseDetection.h>
 #include <sofa/core/collision/NarrowPhaseDetection.h>
@@ -32,20 +32,14 @@
 #include <set>
 #include <boost/unordered_map.hpp>
 #include <sofa/core/CollisionModel.h>
-#include "THMPGHashTable.h"
+#include <THMPGSpatialHashing/THMPGHashTable.h>
 #include <sofa/core/topology/BaseMeshTopology.h>
 #include <sofa/core/behavior/BaseMechanicalState.h>
 #include <sofa/core/behavior/MechanicalState.h>
 #include <sofa/simulation/ResetVisitor.h>
 #include <boost/unordered_map.hpp>
 
-namespace sofa
-{
-
-namespace component
-{
-
-namespace collision
+namespace sofa::component::collision
 {
 
 using namespace sofa::defaulttype;
@@ -112,10 +106,4 @@ public:
     inline bool needsDeepBoundingTree()const override{return false;}
 };
 
-} // namespace collision
-
-} // namespace component
-
-} // namespace sofa
-
-#endif
+} // namespace sofa::component::collision

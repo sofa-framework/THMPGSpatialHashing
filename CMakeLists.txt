@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.12)
 project(THMPGSpatialHashing VERSION 0.1)
 
+set(THMPGSPATIALHASHING_SRC_DIR src/THMPGSpatialHashing)
+
 set(HEADER_FILES
-    THMPGHashTable.h
-    THMPGSpatialHashing.h
-    config.h.in
+    ${THMPGSPATIALHASHING_SRC_DIR}/THMPGHashTable.h
+    ${THMPGSPATIALHASHING_SRC_DIR}/THMPGSpatialHashing.h
+    ${THMPGSPATIALHASHING_SRC_DIR}/config.h.in
 )
 
 set(SOURCE_FILES
-    THMPGHashTable.cpp
-    THMPGSpatialHashing.cpp
-    initTHMPGSpatialHashingPlugin.cpp
+    ${THMPGSPATIALHASHING_SRC_DIR}/THMPGHashTable.cpp
+    ${THMPGSPATIALHASHING_SRC_DIR}/THMPGSpatialHashing.cpp
+    ${THMPGSPATIALHASHING_SRC_DIR}/initTHMPGSpatialHashingPlugin.cpp
 )
 
 find_package(Sofa.Config REQUIRED)
@@ -32,7 +34,10 @@ endif()
 
 sofa_create_package_with_targets(
     PACKAGE_NAME ${PROJECT_NAME}
-    TARGETS ${PROJECT_NAME} AUTO_SET_TARGET_PROPERTIES
     PACKAGE_VERSION ${PROJECT_VERSION}
+    TARGETS ${PROJECT_NAME} AUTO_SET_TARGET_PROPERTIES
+    INCLUDE_SOURCE_DIR "src"
+    INCLUDE_INSTALL_DIR ${PROJECT_NAME}
+    EXAMPLE_INSTALL_DIR "examples"
     RELOCATABLE "plugins"
-    )
+)

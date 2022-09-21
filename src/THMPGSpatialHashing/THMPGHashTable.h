@@ -1,4 +1,4 @@
-#include "config.h"
+#include <THMPGSpatialHashing/config.h>
 
 #include <vector>
 #include <sofa/core/CollisionElement.h>
@@ -16,7 +16,8 @@
 
 
 #define CHECK_IF_ELLEMENT_EXISTS
-namespace sofa{
+namespace sofa::component::collision
+{
 
 class SOFA_THMPGSPATIALHASHING_API THMPGCollisionSet
 {
@@ -264,4 +265,4 @@ protected:
     SReal _timeStamp;
 };
 
-}
+} // namespace sofa::component::collision

@@ -1,6 +1,5 @@
-#include "THMPGHashTable.h"
+#include <THMPGSpatialHashing/THMPGHashTable.h>
 
-using namespace sofa;
 using namespace sofa::component::collision::geometry;
 
 namespace
@@ -23,6 +22,8 @@ namespace
     }
 }
 
+namespace sofa::component::collision
+{
 
 SReal THMPGHashTable::cell_size = (SReal)(0);
 SReal THMPGHashTable::_alarmDist = (SReal)(0);
@@ -221,5 +222,4 @@ void THMPGHashTable::collide(THMPGHashTable & other,sofa::core::collision::Narro
     doCollision(*ptable1,*ptable2,phase,timeStamp,ei,swap);
 }
 
-
-
+} // namespace sofa::component::collision

@@ -19,7 +19,7 @@
 *                                                                             *
 * Contact information: contact@sofa-framework.org                             *
 ******************************************************************************/
-#include "config.h"
+#include <THMPGSpatialHashing/config.h>
 
 namespace sofa
 {
