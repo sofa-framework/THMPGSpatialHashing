@@ -19,16 +19,64 @@
 *                                                                             *
 * Contact information: contact@sofa-framework.org                             *
 ******************************************************************************/
-#ifndef THMPGSPATIALHASHING_CONFIG_H
-#define THMPGSPATIALHASHING_CONFIG_H
+#include <THMPGSpatialHashing/config.h>
 
-#include <sofa/config.h>
+namespace sofa
+{
 
-#ifdef SOFA_BUILD_THMPGSPATIALHASHING
-#  define SOFA_TARGET THMPGSpatialHashing
-#  define SOFA_THMPGSPATIALHASHING_API SOFA_EXPORT_DYNAMIC_LIBRARY
-#else
-#  define SOFA_THMPGSPATIALHASHING_API SOFA_IMPORT_DYNAMIC_LIBRARY
-#endif
+namespace component
+{
 
-#endif
+    //Here are just several convenient functions to help user to know what contains the plugin
+
+    extern "C" {
+                SOFA_THMPGSPATIALHASHING_API void initExternalModule();
+                SOFA_THMPGSPATIALHASHING_API const char* getModuleName();
+                SOFA_THMPGSPATIALHASHING_API const char* getModuleVersion();
+                SOFA_THMPGSPATIALHASHING_API const char* getModuleLicense();
+                SOFA_THMPGSPATIALHASHING_API const char* getModuleDescription();
+                SOFA_THMPGSPATIALHASHING_API const char* getModuleComponentList();
+    }
+
+    void initExternalModule()
+    {
+        static bool first = true;
+        if (first)
+        {
+            first = false;
+        }
+    }
+
+    const char* getModuleName()
+    {
+      return "THMPGSpatialHashing";
+    }
+
+    const char* getModuleVersion()
+    {
+        return "0.2";
+    }
+
+    const char* getModuleLicense()
+    {
+        return "LGPL";
+    }
+
+
+    const char* getModuleDescription()
+    {
+        return "TODO: replace this with the description of your plugin";
+    }
+
+    const char* getModuleComponentList()
+    {
+      /// string containing the names of the classes provided by the plugin
+      return "THMPGSpatialHashing";
+      //return "MyMappingPendulumInPlane, MyBehaviorModel, MyProjectiveConstraintSet";
+    }
+
+
+
+}
+
+}

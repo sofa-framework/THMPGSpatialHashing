@@ -1,18 +1,19 @@
-#include "THMPGSpatialHashing.h"
-#include <SofaBaseCollision/SphereModel.h>
-#include <SofaMeshCollision/TriangleModel.h>
-#include <SofaMeshCollision/LineModel.h>
-#include <SofaMiscCollision/OBBModel.h>
+#include <THMPGSpatialHashing/THMPGSpatialHashing.h>
+
+#include <sofa/component/collision/geometry/SphereModel.h>
+#include <sofa/component/collision/geometry/TriangleModel.h>
+#include <sofa/component/collision/geometry/LineModel.h>
+
+#if THMPGSPATIALHASHING_HAVE_COLLISIONOBBCAPSULE
+#include <CollisionOBBCapsule/geometry/OBBModel.h>
+#endif
+
 
 #include <sofa/core/ObjectFactory.h>
 
-namespace sofa
-{
+using namespace sofa::component::collision::geometry;
 
-namespace component
-{
-
-namespace collision
+namespace sofa::component::collision
 {
 
 struct CannotInitializeCellSize : std::exception {
@@ -78,19 +79,23 @@ void THMPGSpatialHashing::sumEdgeLength_template(core::CollisionModel *cm){
 
 void THMPGSpatialHashing::sumEdgeLength(core::CollisionModel *cm){
     if(cm->getEnumType() == sofa::core::CollisionModel::TRIANGLE_TYPE)
-        sumEdgeLength_template<sofa::component::collision::TriangleCollisionModel<sofa::defaulttype::Vec3Types>::DataTypes>(cm);
+        sumEdgeLength_template<TriangleCollisionModel<sofa::defaulttype::Vec3Types>::DataTypes>(cm);
 //    else if(cm->getEnumType() == sofa::core::CollisionModel::TETRAHEDRON_TYPE)
 //        sumEdgeLength_template<sofa::component::collision::TetrahedronCollisionModel::DataTypes>(cm);
     else if(cm->getEnumType() == sofa::core::CollisionModel::LINE_TYPE)
-        sumEdgeLength_template<sofa::component::collision::LineCollisionModel<sofa::defaulttype::Vec3Types>::DataTypes>(cm);
+        sumEdgeLength_template<LineCollisionModel<sofa::defaulttype::Vec3Types>::DataTypes>(cm);
     else if(cm->getEnumType() == sofa::core::CollisionModel::SPHERE_TYPE){
-        const sofa::component::collision::SphereCollisionModel<sofa::defaulttype::Vec3Types> * sphm = static_cast<SphereCollisionModel<sofa::defaulttype::Vec3Types> *>(cm);
+        const SphereCollisionModel<sofa::defaulttype::Vec3Types> * sphm = static_cast<SphereCollisionModel<sofa::defaulttype::Vec3Types> *>(cm);
         for(int i = 0 ; i < sphm->getSize() ; ++i){
             _total_edges_length += (SReal)(2) * sphm->getRadius(i);
         }
         _nb_edges += sphm->getSize();
     }
-    else if(cm->getEnumType() == sofa::core::CollisionModel::OBB_TYPE){
+#if THMPGSPATIALHASHING_HAVE_COLLISIONOBBCAPSULE
+    else if(cm->getEnumType() == sofa::core::CollisionModel::OBB_TYPE)
+    {
+        using namespace collisionobbcapsule::geometry;
+
         const OBBCollisionModel<sofa::defaulttype::Rigid3Types> * obbm = static_cast<OBBCollisionModel<sofa::defaulttype::Rigid3Types> *>(cm);
         for(int i = 0 ; i < obbm->getSize() ; ++i){
             const OBBCollisionModel<sofa::defaulttype::Rigid3Types>::Coord & extents = obbm->extents(i);
@@ -100,6 +105,7 @@ void THMPGSpatialHashing::sumEdgeLength(core::CollisionModel *cm){
         }
         _nb_edges += (SReal)(3) * obbm->getSize();
     }
+#endif
 }
 
 
@@ -244,6 +250,4 @@ void THMPGSpatialHashing::addCollisionPair (const std::pair<core::CollisionModel
     //sofa::helper::AdvancedTimer::stepEnd("THMPGSpatialHashing::addCollisionPair");
 }
 
-}
-}
-}
+} // namespace sofa::component::collision
