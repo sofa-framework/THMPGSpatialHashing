@@ -1,24 +1,35 @@
 <?xml version="1.0"?>
 <Node name="root" dt="0.02">
-    <RequiredPlugin name="SofaOpenglVisual"/>
-    <RequiredPlugin name="SofaImplicitOdeSolver"/>
-    <RequiredPlugin name="SofaLoader"/>
-    <RequiredPlugin name="SofaMeshCollision"/>
-    <RequiredPlugin name="SofaSimpleFem"/>
-    <RequiredPlugin name="THMPGSpatialHashing"/>
+      <RequiredPlugin name="Sofa.Component.Collision.Detection.Algorithm"/> <!-- Needed to use components [DefaultPipeline] -->
+      <RequiredPlugin name="Sofa.Component.Collision.Detection.Intersection"/> <!-- Needed to use components [MinProximityIntersection] -->
+      <RequiredPlugin name="Sofa.Component.Collision.Geometry"/> <!-- Needed to use components [LineCollisionModel, PointCollisionModel, TriangleCollisionModel] -->
+      <RequiredPlugin name="Sofa.Component.Collision.Response.Contact"/> <!-- Needed to use components [DefaultContactManager] -->
+      <RequiredPlugin name="Sofa.Component.IO.Mesh"/> <!-- Needed to use components [MeshOBJLoader] -->
+      <RequiredPlugin name="Sofa.Component.LinearSolver.Iterative"/> <!-- Needed to use components [CGLinearSolver] -->
+      <RequiredPlugin name="Sofa.Component.Mapping.Linear"/> <!-- Needed to use components [SubsetMapping] -->
+      <RequiredPlugin name="Sofa.Component.Mass"/> <!-- Needed to use components [UniformMass] -->
+      <RequiredPlugin name="Sofa.Component.ODESolver.Backward"/> <!-- Needed to use components [EulerImplicitSolver] -->
+      <RequiredPlugin name="Sofa.Component.SceneUtility"/> <!-- Needed to use components [InfoComponent] -->
+      <RequiredPlugin name="Sofa.Component.SolidMechanics.FEM.Elastic"/> <!-- Needed to use components [TetrahedronFEMForceField] -->
+      <RequiredPlugin name="Sofa.Component.StateContainer"/> <!-- Needed to use components [MechanicalObject] -->
+      <RequiredPlugin name="Sofa.Component.Topology.Container.Constant"/> <!-- Needed to use components [MeshTopology] -->
+      <RequiredPlugin name="Sofa.Component.Topology.Container.Grid"/> <!-- Needed to use components [RegularGridTopology] -->
+      <RequiredPlugin name="Sofa.Component.Visual"/> <!-- Needed to use components [VisualStyle] -->
+      <RequiredPlugin name="Sofa.GL.Component.Rendering3D"/> <!-- Needed to use components [OglModel] -->
+      <RequiredPlugin name="THMPGSpatialHashing"/>
 
-    <VisualStyle displayFlags="showBehaviorModels showForceFields" />
-    <DefaultPipeline verbose="0" draw="0" />
+      <VisualStyle displayFlags="showBehaviorModels showForceFields" />
+      <DefaultPipeline verbose="0" draw="0" />
 
-    <!--
-     THMPGSpatialHashing must be placed near a collision pipeline.
-     Here DefaultPipeline.
-    -->
-    <THMPGSpatialHashing name="spatialHashing" />
+        <!--
+         THMPGSpatialHashing must be placed near a collision pipeline.
+         Here DefaultPipeline.
+     -->
+     <THMPGSpatialHashing name="spatialHashing" />
 
-    <MinProximityIntersection name="Proximity" alarmDistance="0.8" contactDistance="0.5" />
-    <DefaultContactManager name="Response" response="PenalityContactForceField" />
-    <Node name="cubeFEM">
+     <MinProximityIntersection name="Proximity" alarmDistance="0.8" contactDistance="0.5" />
+     <DefaultContactManager name="Response" response="PenalityContactForceField" />
+     <Node name="cubeFEM">
         <EulerImplicitSolver name="cg_odesolver" printLog="false"  rayleighStiffness="0.1" rayleighMass="0.1" />
         <CGLinearSolver iterations="25" name="linear solver" tolerance="1.0e-9" threshold="1.0e-9" />
         <MechanicalObject />

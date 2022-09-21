@@ -12,7 +12,7 @@
 #include <sofa/core/collision/NarrowPhaseDetection.h>
 #include <sofa/helper/AdvancedTimer.h>
 #include <boost/functional/hash.hpp>
-#include <SofaBaseCollision/CubeModel.h>
+#include <sofa/component/collision/geometry/CubeModel.h>
 
 
 #define CHECK_IF_ELLEMENT_EXISTS
@@ -23,7 +23,7 @@ class SOFA_THMPGSPATIALHASHING_API THMPGCollisionSet
 public:
     THMPGCollisionSet() : _timeStamp(SReal(-1.0)){}
 
-    inline void add(sofa::component::collision::Cube elem,SReal timeStamp){
+    inline void add(const sofa::component::collision::geometry::Cube& elem,SReal timeStamp){
         //sofa::helper::AdvancedTimer::stepBegin("THMPGCollisionSet : add");
 
         if(_timeStamp < timeStamp){
@@ -46,7 +46,7 @@ public:
         //sofa::helper::AdvancedTimer::stepEnd("THMPGCollisionSet : add");
     }
 
-    inline void clearAndAdd(sofa::component::collision::Cube elem,SReal timeStamp){
+    inline void clearAndAdd(sofa::component::collision::geometry::Cube elem,SReal timeStamp){
         if(_timeStamp != -1)
             _coll_elems.clear();
 
@@ -68,11 +68,11 @@ public:
         return _timeStamp >= timeStamp;
     }
 
-    inline std::vector<sofa::component::collision::Cube> & getCollisionElems(){
+    inline std::vector<sofa::component::collision::geometry::Cube> & getCollisionElems(){
         return _coll_elems;
     }
 
-    inline const std::vector<sofa::component::collision::Cube> & getCollisionElems()const {
+    inline const std::vector<sofa::component::collision::geometry::Cube> & getCollisionElems()const {
         return _coll_elems;
     }
 
@@ -83,7 +83,7 @@ public:
 
 private:
     SReal _timeStamp;
-    std::vector<sofa::component::collision::Cube> _coll_elems;
+    std::vector<sofa::component::collision::geometry::Cube> _coll_elems;
 };
 
 #undef CHECK_IF_ELLEMENT_EXISTS

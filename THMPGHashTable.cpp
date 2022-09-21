@@ -1,8 +1,28 @@
 #include "THMPGHashTable.h"
-#include <SofaMiscCollision/BaseIntTool.h>
 
 using namespace sofa;
-using namespace sofa::component::collision;
+using namespace sofa::component::collision::geometry;
+
+namespace
+{
+    bool testIntersection(Cube& cube1, Cube& cube2, const SReal alarmDist)
+    {
+        const auto& minVect1 = cube1.minVect();
+        const auto& minVect2 = cube2.minVect();
+        const auto& maxVect1 = cube1.maxVect();
+        const auto& maxVect2 = cube2.maxVect();
+
+        bool res = (minVect1[0] > maxVect2[0] + alarmDist ||
+            minVect2[0] > maxVect1[0] + alarmDist ||
+            minVect1[1] > maxVect2[1] + alarmDist ||
+            minVect2[1] > maxVect1[1] + alarmDist ||
+            minVect1[2] > maxVect2[2] + alarmDist ||
+            minVect2[2] > maxVect1[2] + alarmDist);
+
+        return !res;
+    }
+}
+
 
 SReal THMPGHashTable::cell_size = (SReal)(0);
 SReal THMPGHashTable::_alarmDist = (SReal)(0);
@@ -23,7 +43,7 @@ void THMPGHashTable::refersh(SReal timeStamp){
 
     _timeStamp = timeStamp;
 
-    sofa::component::collision::CubeCollisionModel* cube_model = dynamic_cast<sofa::component::collision::CubeCollisionModel*>(_cm->getPrevious());
+    sofa::component::collision::geometry::CubeCollisionModel* cube_model = dynamic_cast<sofa::component::collision::geometry::CubeCollisionModel*>(_cm->getPrevious());
 
     long int nb_added_elems = 0;
     int mincell[3];
@@ -92,7 +112,7 @@ void THMPGHashTable::doCollision(THMPGHashTable & me,THMPGHashTable & other,sofa
 
                 for(int j = 0 ; j < size1 ; ++j){
                     for(int k = 0 ; k < size2 ; ++k){
-                        if(!checkIfCollisionIsDone(vec_elems2[k].getIndex(),vec_elems1[j].getIndex(),done_collisions) && BaseIntTool::testIntersection(vec_elems2[k],vec_elems1[j],_alarmDist)){
+                        if(!checkIfCollisionIsDone(vec_elems2[k].getIndex(),vec_elems1[j].getIndex(),done_collisions) && testIntersection(vec_elems2[k],vec_elems1[j],_alarmDist)){
                             ei->intersect(vec_elems2[k].getExternalChildren().first,vec_elems1[j].getExternalChildren().first,output);
 
                             done_collisions[vec_elems2[k].getIndex()].push_back(vec_elems1[j].getIndex());
@@ -120,7 +140,7 @@ void THMPGHashTable::doCollision(THMPGHashTable & me,THMPGHashTable & other,sofa
 
                 for(int j = 0 ; j < size1 ; ++j){
                     for(int k = 0 ; k < size2 ; ++k){
-                        if((!checkIfCollisionIsDone(vec_elems1[j].getIndex(),vec_elems2[k].getIndex(),done_collisions)) && BaseIntTool::testIntersection(vec_elems1[j],vec_elems2[k],_alarmDist)){
+                        if((!checkIfCollisionIsDone(vec_elems1[j].getIndex(),vec_elems2[k].getIndex(),done_collisions)) && testIntersection(vec_elems1[j],vec_elems2[k],_alarmDist)){
                             ei->intersect(vec_elems1[j].getExternalChildren().first,vec_elems2[k].getExternalChildren().first,output);
 
                             done_collisions[vec_elems1[j].getIndex()].push_back(vec_elems2[k].getIndex());
@@ -155,7 +175,7 @@ void THMPGHashTable::autoCollide(core::collision::NarrowPhaseDetection * phase,s
 
             for(int j = 0 ; j < sizem1 ; ++j){
                 for(int k = j + 1 ; k < size ; ++k){
-                    if(!checkIfCollisionIsDone(vec_elems[j].getIndex(),vec_elems[k].getIndex(),done_collisions) && BaseIntTool::testIntersection(vec_elems[j],vec_elems[k],_alarmDist)){
+                    if(!checkIfCollisionIsDone(vec_elems[j].getIndex(),vec_elems[k].getIndex(),done_collisions) && testIntersection(vec_elems[j],vec_elems[k],_alarmDist)){
                         ei->intersect(vec_elems[j].getExternalChildren().first,vec_elems[k].getExternalChildren().first,output);
 
                         done_collisions[vec_elems[j].getIndex()].push_back(vec_elems[k].getIndex());

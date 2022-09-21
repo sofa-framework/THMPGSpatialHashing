@@ -26,7 +26,8 @@
 #include <sofa/core/collision/BroadPhaseDetection.h>
 #include <sofa/core/collision/NarrowPhaseDetection.h>
 #include <sofa/core/CollisionElement.h>
-#include <SofaBaseCollision/CubeModel.h>
+#include <sofa/core/collision/NarrowPhaseDetection.h>
+
 #include <sofa/type/Vec.h>
 #include <set>
 #include <boost/unordered_map.hpp>
@@ -70,7 +71,7 @@ protected:
 
     //boost::unordered_map<std::pair<core::CollisionModel*,core::CollisionModel*>,CollidingPair> _qsdf;
 
-    sofa::type::vector<sofa::component::collision::CubeCollisionModel*> cubeModels;//AABBs containing the final collision model
+    sofa::type::vector<sofa::component::collision::geometry::CubeCollisionModel*> cubeModels;//AABBs containing the final collision model
     THMPGHashTable _grid;
     SReal _timeStamp;
     SReal _cell_size;
